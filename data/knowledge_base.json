@@ -1,0 +1,51 @@
+﻿{
+  "store_name": "ShopAssist Demo Store",
+  "products": [
+    {
+      "id": "P001",
+      "name": "Wireless Mouse",
+      "price": 799,
+      "currency": "INR",
+      "description": "Wireless mouse with USB receiver.",
+      "availability": "In stock"
+    },
+    {
+      "id": "P002",
+      "name": "USB-C Cable",
+      "price": 299,
+      "currency": "INR",
+      "description": "1-metre USB-C charging and data cable.",
+      "availability": "In stock"
+    },
+    {
+      "id": "P003",
+      "name": "Laptop Stand",
+      "price": 1299,
+      "currency": "INR",
+      "description": "Adjustable stand for laptops.",
+      "availability": "In stock"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How long does delivery take?",
+      "answer": "Standard delivery usually takes 3-5 business days. Actual delivery times may vary."
+    },
+    {
+      "question": "Do you offer free delivery?",
+      "answer": "Free delivery is available on orders above Rs. 999. Otherwise, a delivery fee may apply."
+    },
+    {
+      "question": "What is your return policy?",
+      "answer": "Eligible products can be returned within 7 days of delivery if they meet the store's return conditions. Contact customer support to confirm eligibility."
+    },
+    {
+      "question": "How can I request a refund?",
+      "answer": "Contact customer support with your order number and return details. Refund eligibility and processing time must be confirmed by the store."
+    },
+    {
+      "question": "What payment methods are accepted?",
+      "answer": "The demo store supports UPI, debit cards and credit cards. Confirm available options at checkout."
+    }
+  ]
+}

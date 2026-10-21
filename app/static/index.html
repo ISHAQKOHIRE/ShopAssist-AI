@@ -1,0 +1,691 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111827">
+    <title>ShopAssist AI | Smart Shopping</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #111827;
+            --muted: #64748b;
+            --primary: #4f46e5;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button, input { font: inherit; }
+        button { cursor: pointer; }
+
+        .topbar {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .nav {
+            max-width: 1150px;
+            margin: auto;
+            padding: 17px 22px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand span { color: var(--primary); }
+
+        .search {
+            flex: 1;
+            display: flex;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .search input {
+            width: 100%;
+            min-width: 0;
+            border: 0;
+            outline: 0;
+            padding: 12px;
+            background: transparent;
+        }
+
+        .search button {
+            border: 0;
+            background: var(--primary);
+            color: white;
+            padding: 0 17px;
+        }
+
+        .cart-button {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 28px 22px 60px;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #111827, #312e81);
+            color: white;
+            border-radius: 22px;
+            padding: 50px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            overflow: hidden;
+        }
+
+        .hero-content { max-width: 600px; }
+
+        .eyebrow {
+            color: #c7d2fe;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.1;
+            margin: 15px 0;
+        }
+
+        .hero p {
+            color: #e2e8f0;
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        .hero-art {
+            font-size: clamp(75px, 12vw, 130px);
+            background: #ffffff16;
+            border: 1px solid #ffffff25;
+            border-radius: 30px;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .primary-button {
+            display: inline-block;
+            margin-top: 12px;
+            background: white;
+            color: #312e81;
+            border: 0;
+            border-radius: 10px;
+            padding: 13px 20px;
+            font-weight: 800;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 24px 0 42px;
+        }
+
+        .benefit {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 17px;
+            border-radius: 13px;
+        }
+
+        .benefit strong { display: block; margin-bottom: 6px; }
+        .benefit span { color: var(--muted); font-size: 13px; }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 { margin: 0 0 7px; font-size: 28px; }
+        .section-heading p { margin: 0; color: var(--muted); }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px #0f172a12;
+        }
+
+        .product-art {
+            height: 190px;
+            display: grid;
+            place-items: center;
+            background: #eef2ff;
+            font-size: 76px;
+        }
+
+        .product-card:nth-child(2) .product-art { background: #ecfeff; }
+        .product-card:nth-child(3) .product-art { background: #f3e8ff; }
+
+        .product-info { padding: 20px; }
+        .stock { color: #15803d; font-size: 12px; font-weight: 700; }
+        .product-info h3 { margin: 10px 0 7px; }
+        .description { color: var(--muted); font-size: 14px; min-height: 36px; line-height: 1.5; }
+
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .price { font-size: 21px; font-weight: 800; }
+
+        .add-button {
+            background: var(--primary);
+            color: white;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 13px;
+            font-weight: 700;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            background: white;
+            border: 1px solid var(--border);
+            padding: 30px;
+            text-align: center;
+            border-radius: 14px;
+            color: var(--muted);
+        }
+
+        .cart-panel {
+            display: none;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .cart-panel.open { display: block; }
+        .cart-line { display: flex; justify-content: space-between; gap: 15px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 19px; font-weight: 800; margin-top: 18px; }
+
+        footer {
+            text-align: center;
+            background: #111827;
+            color: #cbd5e1;
+            padding: 25px 15px;
+            font-size: 13px;
+        }
+
+        .chat-launcher {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 10;
+            background: var(--primary);
+            color: white;
+            border: 0;
+            border-radius: 50px;
+            padding: 15px 20px;
+            font-weight: 800;
+            box-shadow: 0 8px 25px #312e8160;
+        }
+
+        .chat-window {
+            display: none;
+            position: fixed;
+            right: 22px;
+            bottom: 85px;
+            z-index: 10;
+            width: min(380px, calc(100vw - 30px));
+            height: 490px;
+            max-height: calc(100dvh - 120px);
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 15px 55px #0f172a30;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .chat-window.open { display: flex; }
+
+        .chat-header {
+            background: #111827;
+            color: white;
+            padding: 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header small { display: block; color: #cbd5e1; margin-top: 5px; }
+        .close-chat { background: transparent; color: white; border: 0; font-size: 23px; }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .message {
+            max-width: 90%;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.5;
+            padding: 11px 13px;
+            border-radius: 13px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .message.bot { background: white; border: 1px solid var(--border); }
+        .message.user { background: var(--primary); color: white; margin-left: auto; }
+        .typing { padding: 0 15px 10px; color: var(--muted); font-size: 12px; }
+
+        .input-area {
+            display: flex;
+            padding: 12px;
+            gap: 8px;
+            border-top: 1px solid var(--border);
+        }
+
+        .input-area input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 11px;
+            outline-color: var(--primary);
+        }
+
+        .input-area button {
+            border: 0;
+            background: var(--primary);
+            color: white;
+            padding: 0 14px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .input-area button:disabled { opacity: .6; cursor: wait; }
+
+        @media (max-width: 700px) {
+            .nav { flex-wrap: wrap; gap: 12px; padding: 14px; }
+            .brand { flex: 1; }
+            .search { order: 3; flex-basis: 100%; }
+            .container { padding: 18px 14px 45px; }
+            .hero { padding: 30px 23px; }
+            .hero-art { display: none; }
+            .benefits { grid-template-columns: 1fr; gap: 10px; margin-bottom: 32px; }
+            .product-grid { grid-template-columns: 1fr; }
+            .product-art { height: 165px; }
+            .section-heading h2 { font-size: 24px; }
+            .chat-window { right: 15px; bottom: 80px; }
+            .chat-launcher { right: 15px; bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">Discover smarter shopping with ShopAssist AI</div>
+
+    <header>
+        <nav class="nav">
+            <div class="brand">ShopAssist <span>AI.</span></div>
+
+            <form class="search" id="search-form">
+                <input id="search-input" type="search" placeholder="Search products..." aria-label="Search products">
+                <button type="submit">Search</button>
+            </form>
+
+            <button class="cart-button" id="cart-toggle" type="button">
+                🛒 Cart (<span id="cart-count">0</span>)
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">Welcome to ShopAssist AI</div>
+                <h1>Everyday tech.<br>Smarter shopping.</h1>
+                <p>Explore useful tech accessories and get help from your AI shopping assistant whenever you need it.</p>
+                <button class="primary-button" id="shop-now" type="button">Explore products ↓</button>
+            </div>
+            <div class="hero-art" aria-hidden="true">🛍️</div>
+        </section>
+
+        <section class="benefits" aria-label="Shopping benefits">
+            <div class="benefit"><strong>🛡️ Clear product details</strong><span>View available demo product information.</span></div>
+            <div class="benefit"><strong>🤖 AI shopping assistant</strong><span>Ask questions using the built-in local AI.</span></div>
+            <div class="benefit"><strong>🛒 Simple shopping cart</strong><span>Add products and see your subtotal.</span></div>
+        </section>
+
+        <section id="products-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Featured products</h2>
+                    <p>Useful accessories for your everyday setup.</p>
+                </div>
+            </div>
+
+            <div class="cart-panel" id="cart-panel">
+                <h3>Your shopping cart</h3>
+                <div id="cart-items"></div>
+                <div class="cart-total"><span>Subtotal</span><span id="cart-total">₹0</span></div>
+                <p class="description">Demo cart only. Checkout and payments are not enabled.</p>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+                <div class="empty-state">Loading products...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>© 2026 ShopAssist AI · Local AI-powered demo shopping experience</footer>
+
+    <button class="chat-launcher" id="chat-launcher" type="button" aria-expanded="false">🤖 Ask ShopAssist</button>
+
+    <section class="chat-window" id="chat-window" aria-label="ShopAssist AI chat">
+        <div class="chat-header">
+            <div><strong>ShopAssist AI</strong><small>AI Customer Support</small></div>
+            <button class="close-chat" id="close-chat" type="button" aria-label="Close chat">×</button>
+        </div>
+
+        <section id="chat-messages" class="chat-messages" aria-live="polite">
+            <div class="message bot">Hi! Welcome to ShopAssist AI. 👋
+
+I'm your AI shopping assistant. How can I help you today?</div>
+        </section>
+
+        <div id="typing" class="typing" hidden>ShopAssist AI is thinking...</div>
+
+        <form id="chat-form" class="input-area">
+            <input id="message-input" type="text" placeholder="Ask about a product..." autocomplete="off" maxlength="2000" required>
+            <button id="send-button" type="submit">Send ➤</button>
+        </form>
+    </section>
+
+    <script>
+        const products = [
+            {
+                id: "P001",
+                name: "Wireless Mouse",
+                price: 799,
+                description: "Wireless mouse with USB receiver.",
+                icon: "🖱️"
+            },
+            {
+                id: "P002",
+                name: "USB-C Cable",
+                price: 299,
+                description: "Convenient 1-metre USB-C cable.",
+                icon: "🔌"
+            },
+            {
+                id: "P003",
+                name: "Laptop Stand",
+                price: 1299,
+                description: "Adjustable stand for your laptop setup.",
+                icon: "💻"
+            }
+        ];
+
+        const cart = new Map();
+        const productGrid = document.getElementById("product-grid");
+        const searchInput = document.getElementById("search-input");
+        const cartPanel = document.getElementById("cart-panel");
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(price);
+        }
+
+        function renderProducts(query = "") {
+            const filtered = products.filter(product =>
+                (product.name + " " + product.description)
+                    .toLowerCase()
+                    .includes(query.trim().toLowerCase())
+            );
+
+            productGrid.replaceChildren();
+
+            if (!filtered.length) {
+                const empty = document.createElement("div");
+                empty.className = "empty-state";
+                empty.textContent = "No matching products found. Try another search.";
+                productGrid.appendChild(empty);
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement("article");
+                card.className = "product-card";
+
+                const art = document.createElement("div");
+                art.className = "product-art";
+                art.setAttribute("aria-hidden", "true");
+                art.textContent = product.icon;
+
+                const info = document.createElement("div");
+                info.className = "product-info";
+
+                const stock = document.createElement("div");
+                stock.className = "stock";
+                stock.textContent = "● Demo product";
+
+                const title = document.createElement("h3");
+                title.textContent = product.name;
+
+                const description = document.createElement("p");
+                description.className = "description";
+                description.textContent = product.description;
+
+                const bottom = document.createElement("div");
+                bottom.className = "product-bottom";
+
+                const price = document.createElement("span");
+                price.className = "price";
+                price.textContent = formatPrice(product.price);
+
+                const button = document.createElement("button");
+                button.className = "add-button";
+                button.type = "button";
+                button.textContent = "Add to cart";
+                button.addEventListener("click", () => addToCart(product.id));
+
+                bottom.append(price, button);
+                info.append(stock, title, description, bottom);
+                card.append(art, info);
+                productGrid.appendChild(card);
+            });
+        }
+
+        function addToCart(productId) {
+            cart.set(productId, (cart.get(productId) || 0) + 1);
+            renderCart();
+        }
+
+        function renderCart() {
+            const count = [...cart.values()].reduce((sum, qty) => sum + qty, 0);
+            document.getElementById("cart-count").textContent = count;
+
+            const cartItems = document.getElementById("cart-items");
+            cartItems.replaceChildren();
+
+            let total = 0;
+
+            cart.forEach((qty, id) => {
+                const product = products.find(item => item.id === id);
+                if (!product) return;
+
+                total += product.price * qty;
+
+                const line = document.createElement("div");
+                line.className = "cart-line";
+
+                const name = document.createElement("span");
+                name.textContent = `${product.name} × ${qty}`;
+
+                const price = document.createElement("strong");
+                price.textContent = formatPrice(product.price * qty);
+
+                line.append(name, price);
+                cartItems.appendChild(line);
+            });
+
+            if (!count) {
+                const empty = document.createElement("p");
+                empty.className = "description";
+                empty.textContent = "Your cart is empty. Add a product to get started.";
+                cartItems.appendChild(empty);
+            }
+
+            document.getElementById("cart-total").textContent = formatPrice(total);
+        }
+
+        document.getElementById("search-form").addEventListener("submit", event => {
+            event.preventDefault();
+            renderProducts(searchInput.value);
+            document.getElementById("products-section").scrollIntoView({ behavior: "smooth" });
+        });
+
+        searchInput.addEventListener("input", () => renderProducts(searchInput.value));
+
+        document.getElementById("shop-now").addEventListener("click", () => {
+            document.getElementById("products-section").scrollIntoView({ behavior: "smooth" });
+        });
+
+        document.getElementById("cart-toggle").addEventListener("click", () => {
+            cartPanel.classList.toggle("open");
+            if (cartPanel.classList.contains("open")) {
+                cartPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+        });
+
+        const chatWindow = document.getElementById("chat-window");
+        const chatLauncher = document.getElementById("chat-launcher");
+        const input = document.getElementById("message-input");
+        const messages = document.getElementById("chat-messages");
+        const typing = document.getElementById("typing");
+        const sendButton = document.getElementById("send-button");
+        const form = document.getElementById("chat-form");
+
+        function toggleChat(open) {
+            chatWindow.classList.toggle("open", open);
+            chatLauncher.setAttribute("aria-expanded", String(open));
+            if (open) input.focus();
+        }
+
+        chatLauncher.addEventListener("click", () => {
+            toggleChat(!chatWindow.classList.contains("open"));
+        });
+
+        document.getElementById("close-chat").addEventListener("click", () => toggleChat(false));
+
+        function addMessage(text, sender) {
+            const message = document.createElement("div");
+            message.className = `message ${sender}`;
+            message.textContent = text;
+            messages.appendChild(message);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            const question = input.value.trim();
+            if (!question) return;
+
+            addMessage(question, "user");
+            input.value = "";
+            input.disabled = true;
+            sendButton.disabled = true;
+            typing.hidden = false;
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: question })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || "The request could not be completed.");
+                }
+
+                addMessage(data.answer, "bot");
+            } catch (error) {
+                addMessage(
+                    "Sorry, I couldn't get a response. Please try again. Details: " + error.message,
+                    "bot"
+                );
+            } finally {
+                typing.hidden = true;
+                input.disabled = false;
+                sendButton.disabled = false;
+                input.focus();
+            }
+        });
+
+        renderProducts();
+        renderCart();
+    </script>
+</body>
+</html>
